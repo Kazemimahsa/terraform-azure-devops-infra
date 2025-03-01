@@ -1,24 +1,21 @@
-# Terraform Azure DevOps Infrastructure
+# 🌍 Terraform Azure DevOps Infrastructure 🚀
 
-This project automates the deployment of Azure infrastructure using Terraform and Azure DevOps.
+This project automates the deployment of an **Azure cloud infrastructure** using **Terraform** and **Azure DevOps Pipelines**.
 
-## 🚀 Features:
-- Uses Terraform to provision:
-  - Azure Resource Group
-  - Storage Account
-  - Key Vault (with predefined secrets)
-  - App Service & App Service Plan
-  - Virtual Network & Subnet
-  - Network Security Group (NSG)
-- Azure DevOps pipeline for automatic deployment
+## 📌 Overview
+This repository contains Terraform scripts to provision:
+- **Azure Resource Group** (`rg-assignment-02`)
+- **Azure Storage Account** (`stmahsaassignment01`)
+- **Azure Key Vault** (`kv-assignment-01`) with predefined secrets
+- **Azure App Service Plan** (`appsvc-assignment-01`)
+- **Azure App Service** (`app-assignment-01`)
+- **Azure Virtual Network (VNet)** (`vnet-assignment-01`) with a subnet
+- **Network Security Group (NSG)** (`nsg-workloadxyz-01`)
 
-## 📂 Project Structure:
-- `main.tf` → Defines Azure resources
-- `variables.tf` → Manages input variables
-- `azure-pipelines.yml` → Azure DevOps pipeline configuration
+## 🛠️ Tools & Technologies Used
+- **Terraform** (Infrastructure as Code)
+- **Azure DevOps Pipelines** (CI/CD automation)
+- **Azure Cloud** (Hosting environment)
+- **GitHub** (Version control)
 
-## 🛠️ How to Deploy:
-1. Clone this repo:  
-   ```sh
-   git clone https://github.com/your-username/terraform-azure-devops-infra.git
-
+## 📂 Project Structure
