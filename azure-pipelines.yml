@@ -1,0 +1,63 @@
+variables:
+  terraformVersion: '1.10.5'
+  backendServiceConnection: 'sc-assignment-01'
+  backendResourceGroupName: 'rg-assignment-01'
+  backendStorageAccountName: 'stassignterraformstate01'
+  backendContainerName: 'tfstate'
+  backendStateFileName: 'assignment1.tfstate' #This can be whatever you would like to name it
+  environmentServiceConnection: 'sc-assignment-01'
+
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: TerraformInstaller@1
+  displayName: Install Terraform $(terraformVersion)
+  inputs:
+    terraformVersion: $(terraformVersion)
+
+- task: TerraformTaskV4@4
+  displayName: Initialize Terraform
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    backendServiceArm: $(backendServiceConnection)
+    backendAzureRmResourceGroupName: $(backendResourceGroupName)
+    backendAzureRmStorageAccountName: $(backendStorageAccountName)
+    backendAzureRmContainerName: $(backendContainerName)
+    backendAzureRmKey: $(backendStateFileName)
+
+- task: TerraformTaskV4@4
+  displayName: Validate Terraform
+  inputs:
+    provider: 'azurerm'
+    command: 'validate'
+
+- task: TerraformTaskV4@4
+  name: terraformPlan
+  displayName: Create Terraform Plan
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    commandOptions: '-out main.tfplan'
+    environmentServiceNameAzureRM: $(environmentServiceConnection)
+
+# Only runs if the 'terraformPlan' task has detected changes in the state. 
+- task: TerraformTaskV4@4
+  displayName: Apply Terraform Plan
+  condition: and(succeeded(), eq(variables['terraformPlan.changesPresent'], 'true'))
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    commandOptions: 'main.tfplan'
+    environmentServiceNameAzureRM: $(environmentServiceConnection)
+
+- task: TerraformTaskV4@4
+  displayName: Output Terraform State
+  inputs:
+    provider: 'azurerm'
+    command: 'output'
+    environmentServiceNameAzureRM: $(environmentServiceConnection)
